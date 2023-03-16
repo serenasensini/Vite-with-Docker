@@ -1,19 +1,20 @@
 FROM node:16
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm i
+RUN npm i && npm install -g npm@9.6.2
 
 COPY . .
 
-RUN chgrp -R 0 /usr/src/app/ && \
-    chmod -R g=u /usr/src/app && \
-    chown -R 1001:0 /usr/src/app;
-#    chgrp -R 0 /.npm && \
-#    chmod -R g=u /.npm && \
-#    chown -R 1001:0 /.npm;
+RUN mkdir /.npm && \
+    chgrp -R 0 /app && \
+    chmod -R ug+rwX /app && \
+    chown -R 1001:0 /app && \
+    chgrp -R 0 /.npm && \
+    chmod -R ug+rwX /.npm && \
+    chown -R 1001:0 /.npm;
 
 EXPOSE 5173
 
